@@ -15,10 +15,12 @@ const navLinks = document.getElementById('navLinks');
 burger.addEventListener('click', () => {
   burger.classList.toggle('is-open');
   navLinks.classList.toggle('is-open');
+  document.body.classList.toggle('menu-open', navLinks.classList.contains('is-open'));
 });
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   burger.classList.remove('is-open');
   navLinks.classList.remove('is-open');
+  document.body.classList.remove('menu-open');
 }));
 
 // Onglets du menu

@@ -23,6 +23,7 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
+body.menu-open{overflow:hidden}
 body{
   font-family:var(--font-body);
   background:var(--crema);
@@ -113,10 +114,12 @@ h2 em,h1 em{font-style:italic;color:var(--rosso)}
 
 @media(max-width:960px){
   .nav__burger{display:flex}
+  /* .nav a un backdrop-filter → il devient le containing block du fixed :
+     il faut donc une hauteur explicite en vh, pas inset:0 */
   .nav__links{
-    position:fixed;inset:0;top:0;background:var(--crema);flex-direction:column;
-    justify-content:center;font-size:1.35rem;gap:30px;transform:translateX(100%);
-    transition:transform .4s cubic-bezier(.7,0,.2,1);z-index:49;
+    position:fixed;top:0;left:0;width:100vw;height:100vh;background:var(--crema);
+    flex-direction:column;justify-content:center;font-size:1.35rem;gap:30px;
+    transform:translateX(100%);transition:transform .4s cubic-bezier(.7,0,.2,1);z-index:49;
   }
   .nav__links.is-open{transform:translateX(0)}
   .nav__burger{position:relative;z-index:51}
@@ -321,9 +324,19 @@ h2 em,h1 em{font-style:italic;color:var(--rosso)}
 
 /* ---------- FAB mobile ---------- */
 .fab-call{
-  display:none;position:fixed;bottom:18px;left:18px;right:18px;z-index:80;
-  background:var(--rosso);color:#fff;text-align:center;padding:16px;border-radius:999px;
-  font-weight:800;font-size:1.05rem;box-shadow:0 16px 34px -10px rgba(142,47,39,.6);
+  display:none;position:fixed;left:14px;right:14px;z-index:80;
+  bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(160deg,#A83B30,var(--rosso) 60%,#761f18);
+  color:#fff;text-align:center;padding:18px;border-radius:999px;
+  font-weight:800;font-size:1.15rem;letter-spacing:.02em;
+  border:2px solid rgba(255,255,255,.35);
+  box-shadow:0 12px 30px -6px rgba(142,47,39,.7);
+  animation:fabpulse 2.4s ease-out infinite;
+}
+@keyframes fabpulse{
+  0%  {box-shadow:0 12px 30px -6px rgba(142,47,39,.7), 0 0 0 0 rgba(142,47,39,.5)}
+  70% {box-shadow:0 12px 30px -6px rgba(142,47,39,.7), 0 0 0 18px rgba(142,47,39,0)}
+  100%{box-shadow:0 12px 30px -6px rgba(142,47,39,.7), 0 0 0 0 rgba(142,47,39,0)}
 }
 @media(max-width:760px){.fab-call{display:block}}
 
